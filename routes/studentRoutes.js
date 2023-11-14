@@ -1,11 +1,12 @@
-const express = require('express');
+const express = require("express");
 const studentRouter = express.Router(); // Use a distinct variable name for student routes
-const studentController = require('../controller/strudentController');
+const studentController = require("../controller/strudentController");
 
 // Define student routes
-studentRouter.post('/create', studentController.createStudent);
-studentRouter.get('/:id', studentController.getStudent);
-studentRouter.put('/:id', studentController.updateStudent);
-studentRouter.delete('/:id', studentController.deleteStudent);
+studentRouter.get("/", studentController.getStudent);
+studentRouter.get("/add", (req, res) => {
+  res.render("addStudent");
+});
+studentRouter.post("/add", studentController.createStudent);
 
 module.exports = studentRouter; // Export the studentRouter

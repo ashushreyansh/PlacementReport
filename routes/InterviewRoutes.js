@@ -3,9 +3,10 @@ const interviewRouter = express.Router(); // Use a distinct variable name for in
 const interviewController = require('../controller/interviewcontroller');
 
 // Define interview routes
-interviewRouter.post('/create', interviewController.createInterview);
-interviewRouter.get('/:id', interviewController.getInterview);
-interviewRouter.put('/:id', interviewController.updateInterview);
-interviewRouter.delete('/:id', interviewController.deleteInterview);
+interviewRouter.get("/", interviewController.getInterview);
+interviewRouter.post("/create", interviewController.createInterview);
+interviewRouter.post("/:id/allocate", interviewController.allocateStudent);
+interviewRouter.get("/:id/students", interviewController.viewStudents);
+interviewRouter.post("/:id/students/:studentId/mark-result", interviewController.markResult);
 
 module.exports = interviewRouter; // Export the interviewRouter

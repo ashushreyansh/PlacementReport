@@ -1,0 +1,15 @@
+<!-- List of interviews -->
+<ul>
+  <% interviews.forEach(interview => { %>
+  <li><%= interview.date %></li>
+  <% }); %>
+</ul>
+<br>
+<h3>form for creating new interviews</h3>
+<!-- Form to create a new interview -->
+<form action="/interviews/create" method="post">
+  <label for="date">Interview Date:</label>
+  <input type="date" id="date" name="date" required />
+  <!-- Add other fields as needed -->
+  <button type="submit">Create Interview</button>
+</form>
