@@ -20,5 +20,17 @@ studentRouter.post(
   "/:studentId/interviews/create",
   studentController.handleCreateInterviewForStudent
 );
+// Route to delete a student
+studentRouter.get("/:studentId/delete", studentController.deleteStudent);
+
+// Route to render the update student view
+studentRouter.get("/:studentId/update", studentController.updateStudent);
+
+// Route to handle updating a student
+studentRouter.post("/:studentId/update", studentController.handleUpdateStudent);
+studentRouter.post(
+  "/:studentId/interviews/:interviewId",
+  studentController.handleUpdateInterviewResult
+);
 
 module.exports = studentRouter; // Export the studentRouter

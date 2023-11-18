@@ -52,6 +52,84 @@ exports.getStudent = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+exports.deleteStudent = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+
+    // Find the student by ID and remove it
+    await Student.findByIdAndDelete(studentId);
+
+    // Redirect to the students page after deletion
+    res.redirect("/students");
+  } catch (error) {
+    console.error(`Error deleting student: ${error}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.updateStudent = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const student = await Student.findById(studentId);
+
+    if (!student) {
+      return res.status(404).send("Student not found");
+    }
+
+    res.render("updateStudent", { student });
+  } catch (error) {
+    console.error(`Error rendering update student page: ${error}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.handleUpdateStudent = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const {
+      batch,
+      name,
+      college,
+      Placed,
+      DSAFinalScores,
+      WebDFinalScores,
+      ReactFinalScores,
+      companyName,
+      date,
+      interviewResult,
+    } = req.body;
+
+    // Find the student by ID
+    const student = await Student.findById(studentId);
+
+    if (!student) {
+      // Handle the case where the student is not found
+      return res.status(404).send("Student not found");
+    }
+
+    // Update the student's information
+    student.batch = batch;
+    student.studentDetails.name = name;
+    student.studentDetails.college = college;
+    student.studentDetails.Placed = Placed;
+    student.courseScores.DSAFinalScores = DSAFinalScores;
+    student.courseScores.WebDFinalScores = WebDFinalScores;
+    student.courseScores.ReactFinalScores = ReactFinalScores;
+
+    // Update the interview information
+    student.interviews[0].company = companyName;
+    student.interviews[0].date = date;
+    student.interviews[0].results = interviewResult;
+
+    // Save the updated student
+    await student.save();
+
+    res.redirect(`/students`);
+  } catch (error) {
+    console.error(`Error updating student: ${error}`);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 exports.getStudentInterviews = async (req, res) => {
   const { studentId } = req.params;
 
@@ -120,5 +198,41 @@ exports.handleCreateInterviewForStudent = async (req, res) => {
     res.redirect(`/students/${studentId}/interviews`);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+// Handle the update of interview result
+exports.handleUpdateInterviewResult = async (req, res) => {
+  const { studentId, interviewId } = req.params;
+  const { result } = req.body;
+
+  try {
+    // Find the student by ID
+    const student = await Student.findById(studentId);
+
+    if (!student) {
+      // Handle the case where the student is not found
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    // Find the interview within the student's interviews array
+    const interviewToUpdate = student.interviews.find(
+      (interview) => interview._id.toString() === interviewId
+    );
+
+    if (!interviewToUpdate) {
+      // Handle the case where the interview is not found
+      return res.status(404).json({ error: "Interview not found" });
+    }
+
+    // Update the result in the interview
+    interviewToUpdate.results = result;
+
+    // Save the updated student
+    await student.save();
+
+    res.status(200).json({ message: "Interview result updated successfully" });
+  } catch (error) {
+    console.error(`Error updating interview result: ${error}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

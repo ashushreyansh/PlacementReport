@@ -1,30 +1,138 @@
-<!-- studentInterviews.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- ... (head section) ... -->
     <title>Student Interviews</title>
-    <!-- Add your styling if needed -->
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #222222ff;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 70%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        padding: 15px;
+        text-align: center;
+        border: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #007bff;
+        color: #fff;
+      }
+
+      .Schedule {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+      }
+
+      .Schedule:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </head>
   <body>
     <h1>Interviews for <%= student.studentDetails.name %></h1>
 
     <!-- Display the list of interviews for the student -->
     <%= student.allocatedInterview %>
-    <ul>
-      <% student.interviews.forEach(interview => { %>
-        <li>
-          <%= interview.date %> - <%= interview.company %> - <%= interview.results %>
-        </li>
-      <% }); %>
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Date</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% student.interviews.forEach(interview => { %>
+        <tr>
+          <td><%= interview.company %></td>
+          <td><%= interview.date %></td>
+          <td class="resultCell" data-interview-id="<%= interview._id %>">
+            <select class="resultSelect" data-default="<%= interview.results %>" onchange="toggleSaveButton(this)">
+              <option value="On Hold" <%= interview.results === 'On Hold' ? 'selected' : '' %>>On Hold</option>
+              <option value="Selected" <%= interview.results === 'Selected' ? 'selected' : '' %>>Selected</option>
+              <option value="Pending" <%= interview.results === 'Pending' ? 'selected' : '' %>>Pending</option>
+              <option value="Not Selected" <%= interview.results === 'Not Selected' ? 'selected' : '' %>>Not Selected</option>
+              <option value="Did not Attempt" <%= interview.results === 'Did not Attempt' ? 'selected' : '' %>>Did not Attempt</option>
+            </select>
+            <button class="saveButton" style="display: none;" onclick="saveInterviewResult('<%= student._id %>', '<%= interview._id %>')">Save</button>
+          </td>
+          
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
 
     <!-- Button to create a new interview for the specific student -->
     <a href="/students/<%= student._id %>/interviews/create">
       <button class="Schedule">Create New Interview</button>
     </a>
 
-    <!-- Add any additional content or functionality as needed -->
+    <script>
+      async function saveInterviewResult(studentId, interviewId) {
+        const resultSelect = document.querySelector(`.resultCell[data-interview-id="${interviewId}"] .resultSelect`);
+        const newResult = resultSelect.value;
+
+        try {
+          const response = await fetch(`/students/${studentId}/interviews/${interviewId}`, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ result: newResult }),
+          });
+          if (response.ok) {
+            // Hide the save button after successful update
+            const saveButton = resultSelect.parentElement.querySelector('.saveButton');
+            saveButton.style.display = 'none';
+
+            // Set the default value to the newly saved value
+            resultSelect.setAttribute('data-default', newResult);
+          } else {
+            console.error("Failed to update result");
+          }
+        } catch (error) {
+          console.error("Error updating result:", error);
+        }
+      }
+
+    
+      function toggleSaveButton(selectElement) {
+        const saveButton = selectElement.parentElement.querySelector('.saveButton');
+        if (selectElement.value !== selectElement.getAttribute('data-default')) {
+          saveButton.style.display = 'inline-block';
+        } else {
+          saveButton.style.display = 'none';
+        }
+      }
+    </script>
   </body>
 </html>

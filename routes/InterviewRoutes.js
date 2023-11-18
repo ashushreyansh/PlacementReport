@@ -8,5 +8,4 @@ interviewRouter.get(
   "/students/:studentId/interviews",
   interviewController.getStudentInterviews
 );
-
 module.exports = interviewRouter; // Export the interviewRouter

@@ -123,12 +123,19 @@
             <td><%= student.courseScores.DSAFinalScores %></td>
             <td><%= student.courseScores.WebDFinalScores %></td>
             <td><%= student.courseScores.ReactFinalScores %></td>
-            <td><%= student.interviews[0].companyName %></td>
+            <td><%= student.interviews[0].company %></td>
             <td><%= student.interviews[0].date %></td>
             <td><%= student.interviews[0].results %></td>
             <td class="action_button">
-              <button class="delete-btn">Delete</button>
-              <button class="update-btn">Update</button>
+              <button
+                class="delete-btn"
+                onclick="deleteStudent('<%= student._id %>')"
+              >
+                Delete
+              </button>
+              <a href="/students/<%= student._id %>/update">
+                <button class="update-btn">Update</button>
+              </a>
               <a href="/students/<%= student._id %>/interviews">
                 <button class="Schedule">Interviews</button>
               </a>
@@ -153,6 +160,11 @@
       function generateReport() {
         // Assuming you want to navigate to the /csv route when the button is clicked
         window.location.href = "/csv";
+      }
+      function deleteStudent(studentId) {
+        if (confirm("Are you sure you want to delete this student?")) {
+          window.location.href = `/students/${studentId}/delete`;
+        }
       }
     </script>
   </body>

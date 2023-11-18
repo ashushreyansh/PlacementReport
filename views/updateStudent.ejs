@@ -1,0 +1,128 @@
+<!-- updateStudent.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Student</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #222222ff;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .Container {
+        width: 100%;
+        max-width: 600px;
+      }
+      
+      .UpdateStudentCard {
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-radius: 8px;
+      }
+      
+      .head {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #007bff;
+      }
+      
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      label {
+        margin-top: 10px;
+        font-weight: bold;
+      }
+      
+      input,
+      select {
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="Container">
+      <div class="UpdateStudentCard">
+        <div class="head">Update Student</div>
+        <!-- Form to update a student -->
+        <form action="/students/<%= student._id %>/update" method="post">
+          <!-- Include input fields for batch -->
+          <label for="batch">Batch:</label>
+          <input type="text" id="batch" name="batch" value="<%= student.batch %>" required />
+
+          <!-- For studentDetails -->
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" value="<%= student.studentDetails.name %>" required />
+
+          <label for="college">College:</label>
+          <input type="text" id="college" name="college" value="<%= student.studentDetails.college %>" required />
+
+          <label for="Placed">Placed:</label>
+          <select id="Placed" name="Placed" required>
+            <option value="placed" <%= student.studentDetails.Placed === 'placed' ? 'selected' : '' %>>Placed</option>
+            <option value="not placed" <%= student.studentDetails.Placed === 'not placed' ? 'selected' : '' %>>Not Placed</option>
+          </select>
+
+          <!-- For courseScores -->
+          <label for="DSAFinalScores">DSA Final Scores:</label>
+          <input type="number" id="DSAFinalScores" name="DSAFinalScores" value="<%= student.courseScores.DSAFinalScores %>" required />
+
+          <label for="WebDFinalScores">WebD Final Scores:</label>
+          <input type="number" id="WebDFinalScores" name="WebDFinalScores" value="<%= student.courseScores.WebDFinalScores %>" required />
+
+          <label for="ReactFinalScores">React Final Scores:</label>
+          <input type="number" id="ReactFinalScores" name="ReactFinalScores" value="<%= student.courseScores.ReactFinalScores %>" required />
+
+          <!-- For interviews -->
+          <label for="companyName">Company Name:</label>
+          <input type="text" id="companyName" name="companyName" value="<%= student.interviews[0].company %>" required />
+
+          <label for="interviewDate">Interview Date:</label>
+          <input type="date" id="interviewDate" name="date" value="<%= student.interviews[0].date %>" required />
+
+          <!-- For interviewResult -->
+          <label for="interviewResult">Interview Result:</label>
+          <select id="interviewResult" name="interviewResult" required>
+            <option value="On Hold" <%= student.interviews[0].results === 'On Hold' ? 'selected' : '' %>>On Hold</option>
+            <option value="Selected" <%= student.interviews[0].results === 'Selected' ? 'selected' : '' %>>Selected</option>
+            <option value="Pending" <%= student.interviews[0].results === 'Pending' ? 'selected' : '' %>>Pending</option>
+            <option value="Not Selected" <%= student.interviews[0].results === 'Not Selected' ? 'selected' : '' %>>Not Selected</option>
+            <option value="Did not Attempt" <%= student.interviews[0].results === 'Did not Attempt' ? 'selected' : '' %>>Did not Attempt</option>
+          </select>
+
+          <button type="submit">Update Student</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
