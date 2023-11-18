@@ -1,24 +1,159 @@
-<!-- students.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Students</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #333131;
+      }
+
+      h1 {
+        text-align: center;
+        color: #007bff;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #f0f0f0;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        text-align: center;
+      }
+
+      th {
+        background-color: #007bff;
+        color: white;
+      }
+      .Schedule {
+        background-color: #333131;
+        color: white;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .update-btn {
+        background-color: rgb(95, 188, 157);
+        color: white;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .update-btn:hover {
+        background-color: rgb(114, 212, 179);
+      }
+      .delete-btn {
+        background-color: #dc3545;
+        color: white;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .delete-btn:hover {
+        background-color: #c82333;
+      }
+      .action_button {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 5px;
+      }
+      .addNewstudent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin: 5%;
+      }
+      .addNewstudent button {
+        background-color: #007bff;
+        color: #f0f0f0;
+        font-size: 20px;
+        padding: 1%;
+      }
+      .table_container {
+        overflow-x: auto;
+        max-width: 100%;
+      }
+    </style>
   </head>
   <body>
     <h1>List of Students</h1>
 
-    <!-- Display the list of students -->
-    <ul>
-      <% if (Array.isArray(students)) { %> <% students.forEach(student => { %>
-      <li>
-        <%= student.name %> - <%= student.college %> - <%= student.status %>
-      </li>
-      <% }); %> <% } else { %>
-      <li>No students available</li>
-      <% } %>
-    </ul>
+    <!-- Display the list of students in a table -->
+    <div class="table_container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Batch</th>
+            <th>College</th>
+            <th>Placed</th>
+            <th>DSA Final Scores</th>
+            <th>WebD Final Scores</th>
+            <th>React Final Scores</th>
+            <th>Company Name</th>
+            <th>Interview Date</th>
+            <th>Interview Result</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (Array.isArray(students)) { %> <% students.forEach(student => {
+          %>
+          <tr>
+            <td><%= student.studentDetails.name %></td>
+            <td><%= student.batch %></td>
+            <td><%= student.studentDetails.college %></td>
+            <td><%= student.studentDetails.Placed %></td>
+            <td><%= student.courseScores.DSAFinalScores %></td>
+            <td><%= student.courseScores.WebDFinalScores %></td>
+            <td><%= student.courseScores.ReactFinalScores %></td>
+            <td><%= student.interviews[0].companyName %></td>
+            <td><%= student.interviews[0].date %></td>
+            <td><%= student.interviews[0].results %></td>
+            <td class="action_button">
+              <button class="delete-btn">Delete</button>
+              <button class="update-btn">Update</button>
+              <a href="/students/<%= student._id %>/interviews">
+                <button class="Schedule">Interviews</button>
+              </a>
+            </td>
+          </tr>
+          <% }); %> <% } else { %>
+          <tr>
+            <td colspan="11">No students available</td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="addNewstudent">
+      <button style="background-color: #28a745" onclick="generateReport()">
+        Generate Report
+      </button>
+      <a href="/students/add"><button>Add New Student</button></a>
+    </div>
+    <script>
+      function generateReport() {
+        // Assuming you want to navigate to the /csv route when the button is clicked
+        window.location.href = "/csv";
+      }
+    </script>
   </body>
 </html>

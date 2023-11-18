@@ -1,15 +1,30 @@
-<!-- List of interviews -->
-<ul>
-  <% interviews.forEach(interview => { %>
-  <li><%= interview.date %></li>
-  <% }); %>
-</ul>
-<br>
-<h3>form for creating new interviews</h3>
-<!-- Form to create a new interview -->
-<form action="/interviews/create" method="post">
-  <label for="date">Interview Date:</label>
-  <input type="date" id="date" name="date" required />
-  <!-- Add other fields as needed -->
-  <button type="submit">Create Interview</button>
-</form>
+<!-- studentInterviews.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- ... (head section) ... -->
+    <title>Student Interviews</title>
+    <!-- Add your styling if needed -->
+  </head>
+  <body>
+    <h1>Interviews for <%= student.studentDetails.name %></h1>
+
+    <!-- Display the list of interviews for the student -->
+    <%= student.allocatedInterview %>
+    <ul>
+      <% student.interviews.forEach(interview => { %>
+        <li>
+          <%= interview.date %> - <%= interview.company %> - <%= interview.results %>
+        </li>
+      <% }); %>
+    </ul>
+
+    <!-- Button to create a new interview for the specific student -->
+    <a href="/students/<%= student._id %>/interviews/create">
+      <button class="Schedule">Create New Interview</button>
+    </a>
+
+    <!-- Add any additional content or functionality as needed -->
+  </body>
+</html>

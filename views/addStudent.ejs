@@ -4,25 +4,76 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Student</title>
+    <link rel="stylesheet" href="../css/addStudent.css">
   </head>
   <body>
-    <h1>Add New Student</h1>
+    <div class="Container">
+      <div class="AddStudentCard">
+        <div class="head">Add New Student</div>
+        <!-- Form to add a new student -->
+        <form action="/students/add" method="post">
+          <!-- Include input fields for batch -->
+          <label for="batch">Batch:</label>
+          <input type="text" id="batch" name="batch" required />
 
-    <!-- Form to add a new student -->
-    <form action="/students/add" method="post">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required />
+          <!-- For studentDetails -->
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
 
-      <label for="college">College:</label>
-      <input type="text" id="college" name="college" required />
+          <label for="college">College:</label>
+          <input type="text" id="college" name="college" required />
 
-      <label for="status">Status:</label>
-      <select id="status" name="status" required>
-        <option value="placed">Placed</option>
-        <option value="not_placed">Not Placed</option>
-      </select>
+          <label for="Placed">Placed:</label>
+          <select type="text" id="Placed" name="Placed" required>
+            <option value="placed">Placed</option>
+            <option value="not placed">Not Placed</option>
+          </select>
 
-      <button type="submit">Add Student</button>
-    </form>
+          <!-- For courseScores -->
+          <label for="DSAFinalScores">DSA Final Scores:</label>
+          <input
+            type="number"
+            id="DSAFinalScores"
+            name="DSAFinalScores"
+            required
+          />
+
+          <label for="WebDFinalScores">WebD Final Scores:</label>
+          <input
+            type="number"
+            id="WebDFinalScores"
+            name="WebDFinalScores"
+            required
+          />
+
+          <label for="ReactFinalScores">React Final Scores:</label>
+          <input
+            type="number"
+            id="ReactFinalScores"
+            name="ReactFinalScores"
+            required
+          />
+
+          <!-- For interviews -->
+          <label for="companyName">Company Name:</label>
+          <input type="text" id="companyName" name="companyName" required />
+
+          <label for="interviewDate">Interview Date:</label>
+          <input type="date" id="interviewDate" name="date" required />
+
+          <!-- For interviewResult -->
+          <label for="interviewResult">Interview Result:</label>
+          <select id="interviewResult" name="interviewResult" required>
+            <option value="On Hold">On Hold</option>
+            <option value="Selected">Selected</option>
+            <option value="Pending">Pending</option>
+            <option value="Not Selected">Not Selected</option>
+            <option value="Did not Attempt">Did not Attempt</option>
+          </select>
+
+          <button type="submit">Add Student</button>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

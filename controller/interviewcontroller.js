@@ -1,17 +1,29 @@
 const Interview = require("../models/interviewSchema");
 
-exports.createInterview = async (req, res) => {};
-exports.getInterview = async (req, res) => {
-    try {
-        const yourInterviewsArray = await Interview.find();
-        res.render("interview.ejs", { interviews: yourInterviewsArray });
-    }catch(err){
-        res.status(403).json(`error : ${err}`);
-    }
-  
+exports.getStudentInterviews = async (req, res) => {
+  const { studentId } = req.params;
+
+  try {
+    // Fetch the interviews for the specific student based on the studentId
+    const interviews = await Interview.find({ studentId: studentId });
+
+    res.render("interview", { interviews, studentId }); // Render a new view with the interviews
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
-exports.allocateStudent = async (req, res) => {};
+exports.createInterview = async (req, res) => {
+  // Extract necessary data from the request body
+  const { company, date } = req.body;
 
-exports.viewStudents = async (req, res) => {};
+  try {
+    // Create a new interview in the database
+    const newInterview = await Interview.create({ company, date });
 
-exports.markResult = async (req, res) => {};
+    // Redirect to the interviews page or perform other actions as needed
+    res.redirect("/interviews");
+  } catch (err) {
+    // Handle errors and send an appropriate response
+    res.status(500).json({ error: err.message });
+  }
+};

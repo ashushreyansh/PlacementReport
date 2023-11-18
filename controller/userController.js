@@ -12,14 +12,19 @@ exports.signup = async (req, res) => {
       role,
     });
     await newUser.save();
-    res.status(201).json({ message: 'User created successfully' });
+    if (newUser.role === "employee") {
+      // Redirect to the student list page for employees
+      return res.redirect("/students");
+    } else {
+      // Redirect to the homepage for regular users
+      return res.redirect("/");
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
 exports.login = async (req, res) => {
-  
   try {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
@@ -27,8 +32,8 @@ exports.login = async (req, res) => {
       res.status(401).json({ error: "No such account was found" });
       return;
     }
-    if (user.role !== 'employee') {
-      return res.status(403).json({ message: 'Access forbidden' });
+    if (user.role !== "employee") {
+      return res.status(403).json({ message: "Access forbidden" });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (isPasswordValid) {

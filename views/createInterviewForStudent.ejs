@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- ... (head section) ... -->
+    <title>Create Interview for <%= student.studentDetails.name %></title>
+    <!-- Add your styling if needed -->
+  </head>
+  <body>
+    <h1>Create Interview for <%= student.studentDetails.name %></h1>
+
+    <!-- Form for creating a new interview for the specific student -->
+    <form action="/students/<%= studentId %>/interviews/create" method="post">
+      <label for="company">Company Name:</label>
+      <input type="text" id="company" name="company" required />
+
+      <label for="date">Interview Date:</label>
+      <input type="date" id="date" name="date" required />
+
+      <!-- Dropdown for Interview Result -->
+      <label for="result">Interview Result:</label>
+      <select id="result" name="result" required>
+        <option value="On Hold">On Hold</option>
+        <option value="Selected">Selected</option>
+        <option value="Pending">Pending</option>
+        <option value="Not Selected">Not Selected</option>
+        <option value="Did not Attempt">Did not Attempt</option>
+      </select>
+
+      <!-- Add other fields as needed -->
+      <button type="submit">Create Interview</button>
+    </form>
+
+    <!-- Add any additional content or functionality as needed -->
+  </body>
+</html>
