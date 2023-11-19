@@ -5,16 +5,28 @@ const Router = require("./routes/routes");
 const mongoose = require("./config/mongoose");
 const passport = require("passport");
 const session = require("express-session");
-const flash = require('express-flash');
+const flash = require("express-flash");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
-// Use express-session middleware
+// Set up the MongoDB session store
+const store = new MongoDBStore({
+  uri: "mongodb://localhost:27017/your-session-database",
+  collection: "sessions",
+});
+// Catch errors in the MongoDB session store
+store.on("error", (error) => {
+  console.error("MongoDB session store error:", error);
+});
+
+// Set up session middleware
 app.use(
   session({
-    secret: "secret_key",
-    resave: true,
-    saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 60 * 60 * 1000 },
-  }),
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: 60 * 60 * 1000,
+  })
 );
 app.use(flash());
 app.use(passport.initialize());
