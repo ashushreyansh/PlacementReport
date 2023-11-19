@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const Port = process.env.PORT || 3000;
-const Router = require("../PlacementReport/routes/routes");
+const Router = require("./routes/routes");
 const mongoose = require("./config/mongoose");
 const passport = require("passport");
 const session = require("express-session");
