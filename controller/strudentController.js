@@ -45,13 +45,21 @@ exports.getStudent = async (req, res) => {
   try {
     const studentsData = await Student.find().populate("allocatedInterview");
     if (!studentsData || studentsData.length === 0) {
-      return res.status(404).json({ error: "Student not found" });
+      // Redirect to the student add page if there are no students
+      return res.redirect("/students/add");
     }
     res.render("student", { students: studentsData });
   } catch (err) {
+    // If an error occurs, check if it's due to a "Student not found" error
+    if (err.message === "Student not found") {
+      // Redirect to the student add page if a student is not found
+      return res.redirect("/students/add");
+    }
+    // If it's a different error, return a 500 status with the error message
     res.status(500).json({ error: err.message });
   }
 };
+
 exports.deleteStudent = async (req, res) => {
   try {
     const { studentId } = req.params;

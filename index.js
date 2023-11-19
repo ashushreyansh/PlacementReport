@@ -25,7 +25,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: store,
-    cookie: 60 * 60 * 1000,
+    // cookie: maxAge(60 * 60 * 1000),
   })
 );
 app.use(flash());
