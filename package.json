@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": ">=16"
+  },
   "name": "placementreport",
   "version": "1.0.0",
   "description": "employees can fill in data into the database and then download it into csv format",
