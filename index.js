@@ -6,17 +6,7 @@ const mongoose = require("./config/mongoose");
 const passport = require("passport");
 const session = require("express-session");
 const flash = require("express-flash");
-const MongoDBStore = require("connect-mongodb-session")(session);
 
-// Set up the MongoDB session store
-const store = new MongoDBStore({
-  uri: "mongodb://localhost:27017/your-session-database",
-  collection: "sessions",
-});
-// Catch errors in the MongoDB session store
-store.on("error", (error) => {
-  console.error("MongoDB session store error:", error);
-});
 
 // Set up session middleware
 app.use(
