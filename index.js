@@ -7,7 +7,7 @@ const passport = require("passport");
 const session = require("express-session");
 const flash = require("express-flash");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const client = new MongoClient(uri);
+
 // Set up the MongoDB session store
 const store = new MongoDBStore({
   uri: "mongodb://localhost:27017/your-session-database",
@@ -41,18 +41,11 @@ app.set("views", "./views");
 app.use(express.static("./public"));
 app.use("/", Router);
 
-// app.listen(Port, (err) => {
-//   if (err) {
-//     console.log(`Error Connecting to server: ${err}`);
-//     return;
-//   } else {
-//     console.log(`connected to port: ${Port}`);
-//   }
-// });
-client.connect(err => {
-  if(err){ console.error(err); return false;}
-  // connection to mongo is successful, listen for requests
-  app.listen(Port, () => {
-      console.log("listening for requests");
-  })
+app.listen(Port, (err) => {
+  if (err) {
+    console.log(`Error Connecting to server: ${err}`);
+    return;
+  } else {
+    console.log(`connected to port: ${Port}`);
+  }
 });
